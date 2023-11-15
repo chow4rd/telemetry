@@ -1,0 +1,29 @@
+.sideBar {
+    float: left;
+    height: 100vh;
+    background-color: #000000;
+    border-radius: 0px 5px 5px 0px;
+    margin-right: 30px;
+    padding: 10px;
+    padding-top: 50px;
+    align-content: center;
+}
+
+.sideImgContainer {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    display: list-item;
+    list-style-type: none;
+    filter: brightness(1.5);
+}
+
+.sideImg {
+    height: 30px;
+    width: 30px;
+    padding: 2px;
+    border-radius: 3px;
+}
+
+.sideImg:hover {
+    background-color: #c2360b;
+}
