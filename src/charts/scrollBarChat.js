@@ -4,7 +4,7 @@ import HighchartsReact from 'highcharts-react-official';
 
 function LineChartWithScrollbar(getData) {
   useEffect(() => {
-    const data = getData && getData.getData ? getData.getData.split(',').map(Number).slice(1) : [];
+    const data = getData && getData.getData ? getData.getData.split(',').map(Number) : [];
 
     // Configuration options for the chart
     const options = {
@@ -20,7 +20,7 @@ function LineChartWithScrollbar(getData) {
           enabled: true, // Enable the scrollbar
           liveRedraw: false // Set this to false for smoother scrolling
         },
-        categories: Array.from({ length: data.length }, (_, i) => `${i + 1}`)
+        categories: Array.from({ length: data.length }, (_, i) => i + 1)
       },
       yAxis: {
         title: {

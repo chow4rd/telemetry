@@ -1,71 +1,58 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import LineChartWithScrollbar from '../charts/scrollBarChat';
+import '../styles.css';
 
-function DropDown({list, onChange, selectedElement}) {
-    return (
-      <select value={selectedElement} onChange={onChange}>
-        {list.map((listElement, index) => (
-            <option key={index} value={listElement}>{listElement[0]}</option>
-        ))}
-      </select>
-    );
+function DropDown({ list, onChange, selectedElement }) {
+  return (
+    <select value={selectedElement} onChange={onChange}>
+      {list.map((listElement, index) => (
+        <option key={index} value={listElement.dataList}>
+          {new Date(listElement.dateCreated).toLocaleString()} {listElement.dataType}
+        </option>
+      ))}
+    </select>
+  );
 }
 
 function Visualise() {
-    const [csvData, setCsvData] = useState([]);
-    const [outputLists, setOutputLists] = useState([]);
-    const [selectedElement, setSelectedElement] = useState(null);
+  const [outputLists, setOutputLists] = useState([]);
+  const [selectedElement, setSelectedElement] = useState(null);
 
-    const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (event) => {
-    const text = event.target.result;
-    const lines = text.split('\n');
-    const dataMap = new Map();
-
-    lines.forEach((line) => {
-    const [key, value] = line.split(',').map(Number);
-    if (!isNaN(key) && !isNaN(value)) {
-        if (!dataMap.has(key)) {
-        dataMap.set(key, []);
+  useEffect(() => {
+    // Fetch data from MongoDB when the component mounts
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5050/api/view');
+        setOutputLists(response.data);
+        if (response.data.length > 0) {
+          setSelectedElement(response.data[0].dateType);
         }
-        dataMap.get(key).push(value);
-    }
-    });
-
-    const lists = Array.from(dataMap).map(([key, values]) => [key, ...values]);
-
-    setCsvData(text);
-    setOutputLists(lists);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
 
-    reader.readAsText(file);
+    fetchData();
+  }, []);
 
-    if (outputLists.length > 0) {
-      setSelectedElement(outputLists[0][0])
-    }
-    };
+  const handleDropdownChange = (e) => {
+    setSelectedElement(e.target.value);
+  };
 
-    const handleDropdownChange = (e) => {
-        setSelectedElement(e.target.value);
-    };
-
-    return (
-        <>
-        <div>
-        <DropDown list={outputLists} onChange={handleDropdownChange} selectedElement={selectedElement} />    
-        </div>
-        <div className="chart-container">
-        <LineChartWithScrollbar getData={selectedElement}/>
-        </div>
-        <div>
-        <input type="file" accept=".csv" onChange={handleFileInputChange} />
-        </div>
-        </>
-    );
+  return (
+    <>
+      <div className="topBar">
+        <h1>Visualise</h1>
+      </div>
+      <div>
+        <DropDown list={outputLists} onChange={handleDropdownChange} selectedElement={selectedElement} />
+      </div>
+      <div className="chart-container">
+        <LineChartWithScrollbar getData={selectedElement} />
+      </div>
+    </>
+  );
 }
 
 export default Visualise;

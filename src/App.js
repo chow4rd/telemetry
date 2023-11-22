@@ -8,15 +8,17 @@ import ErrorPage from './pages/errorPage';
 import HomeImg from './icons/home.png';
 import UploadImg from './icons/upload.png';
 import ViewImg from './icons/view.png';
+import TeamLogo from './icons/teamLogo.png';
 
 function App() {
   
   return (
     <Router>
       <nav className='sideBar'>
+        <div className='sideImgContainer'><img className='teamLogo' src={TeamLogo} alt="Teamlogo" /></div>
         <Link to='/' className='sideImgContainer'><img className='sideImg' src={HomeImg} alt="visualise" /></Link>
         <Link to='/Upload' className='sideImgContainer'><img className='sideImg' src={UploadImg} alt="upload" /></Link>
-        <Link to='/ViewData' className='sideImgContainer'><img className='sideImg' src={ViewImg} alt="" /></Link>
+        <Link to='/ViewData' className='sideImgContainer'><img className='sideImg' src={ViewImg} alt="view data" /></Link>
       </nav>
       <Routes>
         <Route path='/' element={<Visualise />}/>
