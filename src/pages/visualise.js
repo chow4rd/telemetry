@@ -18,7 +18,7 @@ function DropDown({ list, onChange, selectedElement }) {
 
 function Visualise() {
   const [outputLists, setOutputLists] = useState([]);
-  const [selectedElement, setSelectedElement] = useState(null);
+  const [charts, setCharts] = useState([]);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -27,9 +27,6 @@ function Visualise() {
       try {
         const response = await axios.get('http://localhost:5050/api/view');
         setOutputLists(response.data);
-        if (response.data.length > 0) {
-          setSelectedElement(response.data[0].dateType);
-        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -38,21 +35,28 @@ function Visualise() {
     fetchData();
   }, []);
 
-  const handleDropdownChange = (e) => {
-    setSelectedElement(e.target.value);
+  const handleDropdownChange = (e, chartIndex) => {
+    const newCharts = [...charts];
+    newCharts[chartIndex].selectedElement = e.target.value;
+    setCharts(newCharts);
   };
 
-  function AddGraph() {
-    return (
-  //     <form onSubmit={}>
-  //       <input type='radio'></input>
-  //     </form>
-      <p>test</p>
-    );
-  }
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    const newChart = {
+      chartName: e.target.chartName.value,
+      xAxis: e.target.xAxis.value,
+      yAxis: e.target.yAxis.value,
+      selectedElement: outputLists.length > 0 ? outputLists[0].dataType : null,
+    };
+
+    setCharts([...charts, newChart]);
+    showAdd();
+  };
 
   const showAdd = () => {
-    setShow(true);
+    setShow(!show);
   };
 
   return (
@@ -60,15 +64,31 @@ function Visualise() {
       <div className="topBar">
         <h1>Visualise</h1>
       </div>
+
       <div className='pageContents'>
-        {show ? AddGraph() : null }
+
         <button className='addGraphButton' onClick={showAdd}><img src={Add} alt="addGraph" /></button>
-        <div>
-          <DropDown list={outputLists} onChange={handleDropdownChange} selectedElement={selectedElement} />
-        </div>
-        <div className="chart-container">
-          <LineChartWithScrollbar getData={selectedElement} />
-        </div>
+        {show && (
+          <form onSubmit={handleFormSubmit}>
+          <label htmlFor='chartName'>Chart Name</label>
+          <input type='text' name='chartName'></input>
+  
+          <label htmlFor='chartName'>X Axis Name</label>
+          <input type='text' name='xAxis'></input>
+  
+          <label htmlFor='chartName'>Y Axis Name</label>
+          <input type='text' name='yAxis'></input>
+  
+          <input type='submit'></input>
+        </form>
+        )}
+
+        {charts.map((chart, index) => (
+          <div key={index} className="chart-container">
+            <DropDown list={outputLists} onChange={(e) => handleDropdownChange(e, index)} selectedElement={chart.selectedElement}/>
+            <LineChartWithScrollbar getData={chart.selectedElement} />
+          </div>
+        ))}
       </div>
     </div>
   );

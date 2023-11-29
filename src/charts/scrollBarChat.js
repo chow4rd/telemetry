@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-function LineChartWithScrollbar(getData) {
-  useEffect(() => {
-    const data = getData && getData.getData ? getData.getData.split(',').map(Number) : [];
+function LineChartWithScrollbar({ getData }) {
+  const chartContainerRef = useRef(null);
 
-    // Configuration options for the chart
+  useEffect(() => {
+    const data = getData && getData.split(',').map(Number);
+
     const options = {
       chart: {
         type: 'line'
@@ -17,8 +18,8 @@ function LineChartWithScrollbar(getData) {
       xAxis: {
         type: 'categories',
         scrollbar: {
-          enabled: true, // Enable the scrollbar
-          liveRedraw: false // Set this to false for smoother scrolling
+          enabled: true,
+          liveRedraw: false
         },
         categories: Array.from({ length: data.length }, (_, i) => i + 1)
       },
@@ -27,29 +28,27 @@ function LineChartWithScrollbar(getData) {
           text: 'Speed'
         }
       },
-      series: [{
-        name: 'Time (milliseconds)',
-        data: data
-      },
-
-      {type: 'line',
-      data: data,
-      showInLegend: false,
-      enableMouseTracking: false,
-      color: 'transparent' // Add a transparent series to create a timeline effect
-    } ]
+      series: [
+        {
+          name: 'Time (milliseconds)',
+          data: data
+        },
+        {
+          type: 'line',
+          data: data,
+          showInLegend: false,
+          enableMouseTracking: false,
+          color: 'transparent'
+        }
+      ]
     };
 
-    // Render the chart
-    Highcharts.chart('chartContainer', options);
+    Highcharts.chart(chartContainerRef.current, options);
   }, [getData]);
 
   return (
-    <div id="chartContainer">
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={{}}
-      />
+    <div>
+      <div ref={chartContainerRef}></div>
     </div>
   );
 }
