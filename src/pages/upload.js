@@ -43,6 +43,7 @@ function Upload() {
           setSuccessMessage(`Data uploaded for ${dataType}:`, response.data);  // Set success message
         }
       }
+      setSuccessMessage('Success all data has been uploaded!');
     } catch (error) {
       setSuccessMessage('Error uploading data:', error);
     }
@@ -83,13 +84,16 @@ function Upload() {
   return (
     <div>
       <div className='topBar'><h1>Upload Data</h1></div>
-      {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
-      <div>
-        <input type="file" onChange={handleFileUpload} />
-      </div>
-      {uploadMessage && <div style={{ color: 'green' }}>{uploadMessage}</div>}
+      <div className='pageContents'>
+        <div className='fileUpload'>
+          <input className='fileUploadButton' type="file" id='file' onChange={handleFileUpload} />
+          <label for='file'>Choose File</label>
+          {uploadMessage && <div style={{ color: 'green', textAlign: 'center' }}>{uploadMessage}</div>}
+        </div>
 
-        <button type="submit" onClick={handleSubmit}>Upload Data</button>
+        <button className='uploadButton' type="submit" onClick={handleSubmit}>Upload Data</button>
+        {successMessage && <div style={{ color: 'green', textAlign: 'center' }}>{successMessage}</div>}
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LineChartWithScrollbar from '../charts/scrollBarChat';
 import '../styles.css';
+import Add from '../icons/add.png';
 
 function DropDown({ list, onChange, selectedElement }) {
   return (
@@ -18,6 +19,7 @@ function DropDown({ list, onChange, selectedElement }) {
 function Visualise() {
   const [outputLists, setOutputLists] = useState([]);
   const [selectedElement, setSelectedElement] = useState(null);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     // Fetch data from MongoDB when the component mounts
@@ -40,18 +42,35 @@ function Visualise() {
     setSelectedElement(e.target.value);
   };
 
+  function AddGraph() {
+    return (
+  //     <form onSubmit={}>
+  //       <input type='radio'></input>
+  //     </form>
+      <p>test</p>
+    );
+  }
+
+  const showAdd = () => {
+    setShow(true);
+  };
+
   return (
-    <>
+    <div>
       <div className="topBar">
         <h1>Visualise</h1>
       </div>
-      <div>
-        <DropDown list={outputLists} onChange={handleDropdownChange} selectedElement={selectedElement} />
+      <div className='pageContents'>
+        {show ? AddGraph() : null }
+        <button className='addGraphButton' onClick={showAdd}><img src={Add} alt="addGraph" /></button>
+        <div>
+          <DropDown list={outputLists} onChange={handleDropdownChange} selectedElement={selectedElement} />
+        </div>
+        <div className="chart-container">
+          <LineChartWithScrollbar getData={selectedElement} />
+        </div>
       </div>
-      <div className="chart-container">
-        <LineChartWithScrollbar getData={selectedElement} />
-      </div>
-    </>
+    </div>
   );
 }
 
