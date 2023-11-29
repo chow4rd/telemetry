@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import LineChartWithScrollbar from '../charts/scrollBarChat';
 import '../styles.css';
@@ -20,6 +20,8 @@ function Visualise() {
   const [outputLists, setOutputLists] = useState([]);
   const [charts, setCharts] = useState([]);
   const [show, setShow] = useState(false);
+  const isStored = useRef(false);
+
 
   useEffect(() => {
     // Fetch data from MongoDB when the component mounts
@@ -31,9 +33,21 @@ function Visualise() {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchData();
+
+    const localCharts = JSON.parse(localStorage.getItem('charts'));
+    if (localCharts) {
+     setCharts(localCharts);
+    }
   }, []);
+
+  useEffect(() => {
+    if (isStored.current) {
+      localStorage.setItem('charts', JSON.stringify(charts))
+    } else {
+      isStored.current = true;
+    };
+  }, [charts]);
 
   const handleDropdownChange = (e, chartIndex) => {
     const newCharts = [...charts];
@@ -58,6 +72,13 @@ function Visualise() {
   const showAdd = () => {
     setShow(!show);
   };
+
+  const removeChart = (index) => {
+    const newCharts = [...charts];
+    newCharts.splice(index, 1);
+    setCharts(newCharts);
+  };
+
 
   return (
     <div>
@@ -86,6 +107,7 @@ function Visualise() {
         {charts.map((chart, index) => (
           <div key={index} className="chart-container">
             <DropDown list={outputLists} onChange={(e) => handleDropdownChange(e, index)} selectedElement={chart.selectedElement}/>
+            <button onClick={() => removeChart(index)}>X</button>
             <LineChartWithScrollbar getData={chart.selectedElement} />
           </div>
         ))}

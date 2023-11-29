@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
 
 function LineChartWithScrollbar({ getData }) {
   const chartContainerRef = useRef(null);
@@ -11,6 +10,9 @@ function LineChartWithScrollbar({ getData }) {
     const options = {
       chart: {
         type: 'line'
+      },
+      accessibility: {
+        enabled: false
       },
       title: {
         text: 'Line Chart with Scrollbar'
