@@ -5,7 +5,7 @@ function LineChartWithScrollbar({ getData }) {
   const chartContainerRef = useRef(null);
 
   useEffect(() => {
-    const data = getData && getData.split(',').map(Number);
+    const data = getData ? getData.split(',').map(Number): [];
 
     const options = {
       chart: {

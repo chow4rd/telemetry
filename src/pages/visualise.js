@@ -29,7 +29,7 @@ function Visualise() {
       try {
         const response = await axios.get('http://localhost:5050/api/view');
         setOutputLists(response.data);
-      } catch (error) {
+      } catch (error) { 
         console.error('Error fetching data:', error);
       }
     };
@@ -62,7 +62,7 @@ function Visualise() {
       chartName: e.target.chartName.value,
       xAxis: e.target.xAxis.value,
       yAxis: e.target.yAxis.value,
-      selectedElement: outputLists.length > 0 ? outputLists[0].dataType : null,
+      selectedElement: outputLists && outputLists.length > 0 ? outputLists[0].dataType : null,
     };
 
     setCharts([...charts, newChart]);
