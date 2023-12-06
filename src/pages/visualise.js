@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import LineChartWithScrollbar from '../charts/scrollBarChat';
 import '../styles.css';
@@ -18,8 +18,10 @@ function DropDown({ list, onChange, selectedElement }) {
 
 function Visualise() {
   const [outputLists, setOutputLists] = useState([]);
-  const [selectedElement, setSelectedElement] = useState(null);
+  const [charts, setCharts] = useState([]);
   const [show, setShow] = useState(false);
+  const isStored = useRef(false);
+
 
   useEffect(() => {
     // Fetch data from MongoDB when the component mounts
@@ -27,21 +29,33 @@ function Visualise() {
       try {
         const response = await axios.get('http://localhost:5050/api/view');
         setOutputLists(response.data);
-        if (response.data.length > 0) {
-          setSelectedElement(response.data[0].dateType);
-        }
-      } catch (error) {
+      } catch (error) { 
         console.error('Error fetching data:', error);
       }
     };
-
     fetchData();
+
+    const localCharts = JSON.parse(localStorage.getItem('charts'));
+    if (localCharts) {
+     setCharts(localCharts);
+    }
   }, []);
 
-  const handleDropdownChange = (e) => {
-    setSelectedElement(e.target.value);
+  useEffect(() => {
+    if (isStored.current) {
+      localStorage.setItem('charts', JSON.stringify(charts))
+    } else {
+      isStored.current = true;
+    };
+  }, [charts]);
+
+  const handleDropdownChange = (e, chartIndex) => {
+    const newCharts = [...charts];
+    newCharts[chartIndex].selectedElement = e.target.value;
+    setCharts(newCharts);
   };
 
+<<<<<<< HEAD
   function AddGraph() {
     return (
       <html>
@@ -61,25 +75,64 @@ function Visualise() {
       </html>
     );
   }
+=======
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    const newChart = {
+      chartName: e.target.chartName.value,
+      xAxis: e.target.xAxis.value,
+      yAxis: e.target.yAxis.value,
+      selectedElement: outputLists && outputLists.length > 0 ? outputLists[0].dataType : null,
+    };
+
+    setCharts([...charts, newChart]);
+    showAdd();
+  };
+>>>>>>> bec6f398c8b03000bfa05cafb0e1c769c35f3388
 
   const showAdd = () => {
-    setShow(true);
+    setShow(!show);
   };
+
+  const removeChart = (index) => {
+    const newCharts = [...charts];
+    newCharts.splice(index, 1);
+    setCharts(newCharts);
+  };
+
 
   return (
     <div>
       <div className="topBar">
         <h1>Visualise</h1>
       </div>
+
       <div className='pageContents'>
-        {show ? AddGraph() : null }
+
         <button className='addGraphButton' onClick={showAdd}><img src={Add} alt="addGraph" /></button>
-        <div>
-          <DropDown list={outputLists} onChange={handleDropdownChange} selectedElement={selectedElement} />
-        </div>
-        <div className="chart-container">
-          <LineChartWithScrollbar getData={selectedElement} />
-        </div>
+        {show && (
+          <form onSubmit={handleFormSubmit}>
+          <label htmlFor='chartName'>Chart Name</label>
+          <input type='text' name='chartName'></input>
+  
+          <label htmlFor='chartName'>X Axis Name</label>
+          <input type='text' name='xAxis'></input>
+  
+          <label htmlFor='chartName'>Y Axis Name</label>
+          <input type='text' name='yAxis'></input>
+  
+          <input type='submit'></input>
+        </form>
+        )}
+
+        {charts.map((chart, index) => (
+          <div key={index} className="chart-container">
+            <DropDown list={outputLists} onChange={(e) => handleDropdownChange(e, index)} selectedElement={chart.selectedElement}/>
+            <button onClick={() => removeChart(index)}>X</button>
+            <LineChartWithScrollbar getData={chart.selectedElement} />
+          </div>
+        ))}
       </div>
     </div>
   );

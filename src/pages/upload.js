@@ -87,7 +87,7 @@ function Upload() {
       <div className='pageContents'>
         <div className='fileUpload'>
           <input className='fileUploadButton' type="file" id='file' onChange={handleFileUpload} />
-          <label for='file'>Choose File</label>
+          <label htmlFor='file'>Choose File</label>
           {uploadMessage && <div style={{ color: 'green', textAlign: 'center' }}>{uploadMessage}</div>}
         </div>
 
