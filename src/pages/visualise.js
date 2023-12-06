@@ -44,10 +44,21 @@ function Visualise() {
 
   function AddGraph() {
     return (
-  //     <form onSubmit={}>
-  //       <input type='radio'></input>
-  //     </form>
-      <p>test</p>
+      <html>
+        <body><p>Please fill in the form to specify graph features:</p>
+
+        <form id= "" action="">
+          {/* X axis: <input type="" name=""><br>
+          Y axis: <input type="" name =""><br></br>
+          <input type="" onclick="" value=""></input> */}
+        </form>
+        <script>
+          
+        </script>
+
+        
+        </body>
+      </html>
     );
   }
 
