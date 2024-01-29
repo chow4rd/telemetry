@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import LineChartWithScrollbar from '../charts/scrollBarChat';
+import LineChart from '../charts/lineChart';
 import '../styles.css';
 import Add from '../icons/add.png';
 
@@ -94,10 +94,10 @@ function Visualise() {
           <label htmlFor='chartName'>Chart Name</label>
           <input type='text' name='chartName'></input>
   
-          <label htmlFor='chartName'>X Axis Name</label>
+          <label htmlFor='xAxis'>X Axis Name</label>
           <input type='text' name='xAxis'></input>
   
-          <label htmlFor='chartName'>Y Axis Name</label>
+          <label htmlFor='yAxis'>Y Axis Name</label>
           <input type='text' name='yAxis'></input>
   
           <input type='submit'></input>
@@ -108,7 +108,7 @@ function Visualise() {
           <div key={index} className="chart-container">
             <DropDown list={outputLists} onChange={(e) => handleDropdownChange(e, index)} selectedElement={chart.selectedElement}/>
             <button onClick={() => removeChart(index)}>X</button>
-            <LineChartWithScrollbar getData={chart.selectedElement} />
+            <LineChart getData={chart.selectedElement} chartName={chart.chartName} xAxis={chart.xAxis} yAxis={chart.yAxis}/>
           </div>
         ))}
       </div>

@@ -1,46 +1,41 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from 'axios'; //used for making HTTP requests
 import '../styles.css';
 
 function Upload() {
+  //the CSV will be split into these catagories
   const dataTypes = [
-    'flWheelSpeed',
-    'frWheelSpeed',
-    'blWheelSpeed',
-    'brWheelSpeed',
-    'frontSuspension',
-    'blSuspension',
-    'brSuspension',
-    'verticalAcceleration',
-    'fowardAcceleration',
-    'sideAcceleration',
+    'roll',
+    'pitch',
+    'yaw',
   ];
   
+  //adds an empty dataList to each dataType and stores them in an object
   const initialState = dataTypes.reduce((acc, dataType) => {
     acc[dataType] = {
       dataType,
       dataList: [],
     };
     return acc;
-  }, {});
+  }, {}); //{} is the initial empty object that stores the dataType key and dataList
 
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState(initialState); //used to store all the data values
 
-  const [successMessage, setSuccessMessage] = useState('');
-  const [uploadMessage, setUploadMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState(''); //storing messages for rerender
+  const [uploadMessage, setUploadMessage] = useState(''); //storing messages for rerender
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); //stops page reloading
     try {
-      // Iterate through initialState properties
+      //loop through initialState properties
       console.log(initialState)
       for (const dataType in initialState) {
         if (initialState.hasOwnProperty(dataType)) {
 
-          // Make an individual API request for each dataList
+          //make an individual API request for each dataList
           const response = await axios.post('http://localhost:5050/api/upload', state[dataType]);
 
-          setSuccessMessage(`Data uploaded for ${dataType}:`, response.data);  // Set success message
+          setSuccessMessage(`Data uploaded for ${dataType}:`, response.data);  //set success message
         }
       }
       setSuccessMessage('Success all data has been uploaded!');
@@ -48,8 +43,6 @@ function Upload() {
       setSuccessMessage('Error uploading data:', error);
     }
   };
-
-
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -62,7 +55,7 @@ function Upload() {
         const rows = content.split('\n');
   
         for (const row of rows) {
-          const columns = row.split(";");
+          const columns = row.split(",");
           var counter = 0;
         
           for (const dataType in initialState) {
@@ -79,7 +72,6 @@ function Upload() {
       setUploadMessage('No file selected!');
     }
   };
-  
   
   return (
     <div>
@@ -98,4 +90,4 @@ function Upload() {
   );
 }
 
-  export default Upload;
+export default Upload;

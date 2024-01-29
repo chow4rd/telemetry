@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Highcharts from 'highcharts';
 
-function LineChartWithScrollbar({ getData }) {
+function LineChart({ getData,  chartName, xAxisName, yAxisName }) {
   const chartContainerRef = useRef(null);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ function LineChartWithScrollbar({ getData }) {
         enabled: false
       },
       title: {
-        text: 'Line Chart with Scrollbar'
+        text: chartName
       },
       xAxis: {
         type: 'categories',
@@ -23,30 +23,30 @@ function LineChartWithScrollbar({ getData }) {
           enabled: true,
           liveRedraw: false
         },
-        categories: Array.from({ length: data.length }, (_, i) => i + 1)
+        categories: Array.from({ length: data.length }, (_, i) => i + 1),
       },
       yAxis: {
         title: {
-          text: 'Speed'
-        }
+          text: yAxisName,
+        },
       },
       series: [
         {
-          name: 'Time (milliseconds)',
-          data: data
+          name: xAxisName,
+          data: data,
         },
         {
           type: 'line',
           data: data,
           showInLegend: false,
           enableMouseTracking: false,
-          color: 'transparent'
+          color: 'transparent',
         }
       ]
     };
 
     Highcharts.chart(chartContainerRef.current, options);
-  }, [getData]);
+  }, [getData, chartName, xAxisName, yAxisName]);
 
   return (
     <div>
@@ -55,4 +55,4 @@ function LineChartWithScrollbar({ getData }) {
   );
 }
 
-export default LineChartWithScrollbar;
+export default LineChart;
