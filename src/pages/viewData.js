@@ -3,26 +3,26 @@ import axios from 'axios';
 import '../styles.css';
 
 function ViewData() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]); //stores fetched data
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect(() => { //runs as soon as component initialises 
+    const fetchData = async () => { //asynchronous function lets program run while working
       try {
-        const response = await axios.get('http://localhost:5050/api/view');
-        setData(response.data);
+        const response = await axios.get('http://localhost:5050/api/view'); //fetches data
+        setData(response.data); //adds data to the storage 
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    fetchData();
+    fetchData(); //calls the fetchData function
   }, []);
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:5050/api/delete/${id}`);
+      const response = await axios.delete(`http://localhost:5050/api/delete/${id}`); //deletes data from database
       console.log('Data deleted:', response.data);
-      setData(data.filter(item => item._id !== id));
+      setData(data.filter(item => item._id !== id));  //deletes data from storage using filter
     } catch (error) {
       console.error('Error deleting data:', error);
     }

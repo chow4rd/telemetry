@@ -3,14 +3,14 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const app = express();
-const PORT = process.env.PORT || 5050;
+const app = express(); //creates instance of express
+const PORT = process.env.PORT || 5050; //sets server port
 
-app.use(cors());
-app.use(express.json());
+app.use(cors()); //configures middleware
+app.use(express.json()); //parses incoming json
 
-// Connect to MongoDB Atlas
-mongoose.connect(process.env.MONGO_DB_URL, {
+//connect to MongoDB Atlas
+mongoose.connect(process.env.MONGO_DB_URL, { //connects to MongoDB
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -19,17 +19,17 @@ mongoose.connection.on('connected', () => {
   console.log('Connected to MongoDB Atlas');
 });
 
-// Create a schema for your data
+//create a schema for the data
 const dataSchema = new mongoose.Schema({
   dateCreated: { type: Date, default: Date.now },
   dataType: String,
   dataList: [Number],
 });
 
-// Create a model based on the schema
+//create a model based on the schema
 const Data = mongoose.model('Data', dataSchema);
 
-// API endpoint to add data to the database
+//API endpoint to add data to the database
 app.post('/api/upload', async (req, res) => {
   try {
     const newData = await Data.create(req.body);
@@ -40,7 +40,7 @@ app.post('/api/upload', async (req, res) => {
   }
 });
 
-// API endpoint to get all data from the database
+//API endpoint to get all data from the database
 app.get('/api/view', async (req, res) => {
   try {
     const allData = await Data.find();
@@ -51,7 +51,7 @@ app.get('/api/view', async (req, res) => {
   }
 });
 
-// API endpoint to delete data from the database
+//API endpoint to delete data from the database
 app.delete('/api/delete/:id', async (req, res) => {
   try {
     const deletedData = await Data.findByIdAndDelete(req.params.id);
@@ -62,6 +62,7 @@ app.delete('/api/delete/:id', async (req, res) => {
   }
 });
 
+//starts Express server and listens on a specific point
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

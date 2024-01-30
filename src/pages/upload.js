@@ -10,7 +10,7 @@ function Upload() {
     'yaw',
   ];
   
-  //adds an empty dataList to each dataType and stores them in an object
+  //adds an empty dataList to each dataType and stores them in an object (uses reduce and accumalator)
   const initialState = dataTypes.reduce((acc, dataType) => {
     acc[dataType] = {
       dataType,
@@ -40,20 +40,21 @@ function Upload() {
       }
       setSuccessMessage('Success all data has been uploaded!');
     } catch (error) {
-      setSuccessMessage('Error uploading data:', error);
+      setSuccessMessage(`Error uploading data ${error.message}`); //if there is an error display error message
     }
   };
 
   const handleFileUpload = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]; //extracts the file from the input
   
-    if (file) {
-      const reader = new FileReader();
+    if (file) { //checks a file was selected
+      const reader = new FileReader(); //creates instance of file reader
   
-      reader.onload = (event) => {
-        const content = event.target.result;
+      reader.onload = (event) => { //when file is fully read its processed
+        const content = event.target.result; //file content
         const rows = content.split('\n');
-  
+
+        //loop through each row and column and populate the dataTypes from initialState
         for (const row of rows) {
           const columns = row.split(",");
           var counter = 0;
@@ -63,13 +64,13 @@ function Upload() {
             counter += 1;
           }
         }
-        setState(initialState);
+        setState(initialState); //updates the initial state with the new values
         setUploadMessage('File uploaded!');
       };
   
-      reader.readAsText(file);
+      reader.readAsText(file); //reads the file as text
     } else {
-      setUploadMessage('No file selected!');
+      setUploadMessage('No file selected!'); //if there was no file read display this message
     }
   };
   
