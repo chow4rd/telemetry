@@ -108,7 +108,7 @@ function Visualise() {
           <div key={index} className="chart-container">
             <DropDown list={outputLists} onChange={(e) => handleDropdownChange(e, index)} selectedElement={chart.selectedElement}/>
             <button onClick={() => removeChart(index)}>X</button>
-            <LineChart getData={chart.selectedElement} chartName={chart.chartName} xAxis={chart.xAxis} yAxis={chart.yAxis}/>
+            <LineChart getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
           </div>
         ))}
       </div>
