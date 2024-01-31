@@ -68,8 +68,6 @@ function Visualise() {
     setCharts([...charts, newChart]);
     showAdd();
   };
-
-
   const showAdd = () => {
     setShow(!show);
   };
