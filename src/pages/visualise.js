@@ -95,14 +95,14 @@ function Visualise() {
           <input type='text' name='chartName'></input>
 
           <label> Type of Graph
-            <select name="Type of Graph">
-              <option value="Line Chart">Line Chart</option>
-              <option value="Basic Bar Chart">Basic Bar Chart</option>
-              <option value="Basic Area Graph">Basic Area Graph</option>
-              <option value="Basic Column">Basic Column</option>
-              <option value="Stacked and Grouped Column">Stacked and Grouped Column</option>
-              <option value="Gauge Series">Gauge Series</option>
-              <option value="Gauge with Dual Axis">Gauge with Dual Axis</option>
+            <select name="Type of Graph" >
+              <option value="line" name='chartType'>Line Chart</option>
+              <option value="bar" name='chartType'>Basic Bar Chart</option>
+              <option value="area" name='chartType'>Basic Area Graph</option>
+              <option value="column" name='chartType'>Basic Column</option>
+              <option value="column" name='chartType'>Stacked and Grouped Column</option>
+              <option value="gauge" name='chartType'>Gauge Series</option>
+              <option value="gauge" name='chartType'>Gauge with Dual Axis</option>
             </select>
           </label>
   
