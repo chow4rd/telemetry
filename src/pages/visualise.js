@@ -68,7 +68,10 @@ function Visualise() {
     setCharts([...charts, newChart]);
     showAdd();
   };
+<<<<<<< HEAD
 
+=======
+>>>>>>> e278b46998e417858c312822105ae032dda78c18
 
   const showAdd = () => {
     setShow(!show);
