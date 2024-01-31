@@ -55,27 +55,6 @@ function Visualise() {
     setCharts(newCharts);
   };
 
-<<<<<<< HEAD
-  function AddGraph() {
-    return (
-      <html>
-        <body><p>Please fill in the form to specify graph features:</p>
-
-        <form id= "" action="">
-          {/* X axis: <input type="" name=""><br>
-          Y axis: <input type="" name =""><br></br>
-          <input type="" onclick="" value=""></input> */}
-        </form>
-        <script>
-          
-        </script>
-
-        
-        </body>
-      </html>
-    );
-  }
-=======
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
@@ -89,7 +68,6 @@ function Visualise() {
     setCharts([...charts, newChart]);
     showAdd();
   };
->>>>>>> bec6f398c8b03000bfa05cafb0e1c769c35f3388
 
   const showAdd = () => {
     setShow(!show);
