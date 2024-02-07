@@ -3,6 +3,7 @@ import axios from 'axios';
 import LineChart from '../charts/lineChart';
 import '../styles.css';
 import Add from '../icons/add.png';
+import Delete from '../icons/delete.png';
 
 function DropDown({ list, onChange, selectedElement }) {
   return (
@@ -106,7 +107,7 @@ function Visualise() {
         {charts.map((chart, index) => (
           <div key={index} className="chart-container">
             <DropDown list={outputLists} onChange={(e) => handleDropdownChange(e, index)} selectedElement={chart.selectedElement}/>
-            <button onClick={() => removeChart(index)}>X</button>
+            <img className="deleteButton" onClick={() => removeChart(index)} src={Delete} alt="deleteGraph"/>
             <LineChart getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
           </div>
         ))}

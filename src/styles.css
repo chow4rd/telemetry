@@ -121,6 +121,15 @@ h1 {
     cursor: pointer;
 }
 
+.deleteButton {
+    cursor: pointer;
+    position: relative;
+    padding-top: 25px;
+    padding-left: 20px;
+    width: 30px;
+    height: 30px;
+}
+
 .fileUpload label:hover {
     background-color: #e33e0c;
 }
