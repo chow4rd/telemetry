@@ -4,6 +4,7 @@ import LineChart from '../charts/lineChart';
 import '../styles.css';
 import Add from '../icons/add.png';
 import Delete from '../icons/delete.png';
+import BarChart from "../charts/basicBarChart";
 
 function DropDown({ list, onChange, selectedElement }) {
   return (
@@ -22,6 +23,7 @@ function Visualise() {
   const [charts, setCharts] = useState([]);
   const [show, setShow] = useState(false);
   const isStored = useRef(false);
+  const [chartType, setChartType] = useState()
 
 
   useEffect(() => {
@@ -79,6 +81,10 @@ function Visualise() {
     setCharts(newCharts);
   };
 
+  function addValueToChartType(event){
+    setChartType(event.target.value);
+  }
+
 
   return (
     <div>
@@ -93,6 +99,18 @@ function Visualise() {
           <form onSubmit={handleFormSubmit}>
           <label htmlFor='chartName'>Chart Name</label>
           <input type='text' name='chartName'></input>
+
+          <label> Type of Graph
+            <select name="Type of Graph" onChange={addValueToChartType}>
+              <option value="line" name='chartType'>Line Chart</option>
+              <option value="bar" name='chartType'>Basic Bar Chart</option>
+              <option value="area" name='chartType'>Basic Area Graph</option>
+              <option value="column" name='chartType'>Basic Column</option>
+              <option value="column" name='chartType'>Stacked and Grouped Column</option>
+              <option value="gauge" name='chartType'>Gauge Series</option>
+              <option value="gauge" name='chartType'>Gauge with Dual Axis</option>
+            </select>
+          </label>
   
           <label htmlFor='xAxis'>X Axis Name</label>
           <input type='text' name='xAxis'></input>
@@ -108,7 +126,21 @@ function Visualise() {
           <div key={index} className="chart-container">
             <DropDown list={outputLists} onChange={(e) => handleDropdownChange(e, index)} selectedElement={chart.selectedElement}/>
             <img className="deleteButton" onClick={() => removeChart(index)} src={Delete} alt="deleteGraph"/>
-            <LineChart getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
+            {chartType === 'line' &&
+                <LineChart getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
+            }
+            {chartType === 'bar' &&
+                <BarChart getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
+            }
+            {chartType === 'area' &&
+                <h2>This is a Basic Area Graph</h2> //Add code for the Basic Area Graph
+            }
+            {chartType === 'column' &&
+                <h2>This is a Basic Column Graph</h2> //Add code for the Basic Column Graph
+            }
+            {chartType === 'gauge' &&
+                <h2>This is a Gauge</h2> //Add code for the Gauge
+            }
           </div>
         ))}
       </div>
