@@ -102,6 +102,7 @@ function Visualise() {
 
           <label> Type of Graph
             <select name="Type of Graph" onChange={addValueToChartType}>
+              <option disabled selected hidden>Select a Type of Chart</option>
               <option value="line" name='chartType'>Line Chart</option>
               <option value="bar" name='chartType'>Basic Bar Chart</option>
               <option value="area" name='chartType'>Basic Area Graph</option>
