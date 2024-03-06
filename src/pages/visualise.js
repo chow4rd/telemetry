@@ -5,6 +5,8 @@ import '../styles.css';
 import Add from '../icons/add.png';
 import Delete from '../icons/delete.png';
 import BarChart from "../charts/basicBarChart";
+import BasicAreaChart from "../charts/basicArea";
+import BasicColumn from "../charts/basicColumn";
 
 function DropDown({ list, onChange, selectedElement }) {
   return (
@@ -128,16 +130,16 @@ function Visualise() {
             <DropDown list={outputLists} onChange={(e) => handleDropdownChange(e, index)} selectedElement={chart.selectedElement}/>
             <img className="deleteButton" onClick={() => removeChart(index)} src={Delete} alt="deleteGraph"/>
             {chartType === 'line' &&
-                <LineChart getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
+                <LineChart getData={chart.selectedElement} chartName={chart.chartName} chartType={'line'} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
             }
             {chartType === 'bar' &&
                 <BarChart getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
             }
             {chartType === 'area' &&
-                <h2>This is a Basic Area Graph</h2> //Add code for the Basic Area Graph
+                <BasicAreaChart getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
             }
             {chartType === 'column' &&
-                <h2>This is a Basic Column Graph</h2> //Add code for the Basic Column Graph
+                <BasicColumn getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
             }
             {chartType === 'gauge' &&
                 <h2>This is a Gauge</h2> //Add code for the Gauge
