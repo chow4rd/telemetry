@@ -67,6 +67,7 @@ function Visualise() {
       chartName: e.target.chartName.value,
       xAxis: e.target.xAxis.value,
       yAxis: e.target.yAxis.value,
+      chartType: chartType,
       selectedElement: outputLists && outputLists.length > 0 ? outputLists[0].dataType : null,
     };
 
@@ -129,19 +130,19 @@ function Visualise() {
           <div key={index} className="chart-container">
             <DropDown list={outputLists} onChange={(e) => handleDropdownChange(e, index)} selectedElement={chart.selectedElement}/>
             <img className="deleteButton" onClick={() => removeChart(index)} src={Delete} alt="deleteGraph"/>
-            {chartType === 'line' &&
-                <LineChart getData={chart.selectedElement} chartName={chart.chartName} chartType={'line'} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
+            {chart.chartType === 'line' &&
+                <LineChart getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
             }
-            {chartType === 'bar' &&
+            {chart.chartType === 'bar' &&
                 <BarChart getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
             }
-            {chartType === 'area' &&
+            {chart.chartType === 'area' &&
                 <BasicAreaChart getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
             }
-            {chartType === 'column' &&
+            {chart.chartType === 'column' &&
                 <BasicColumn getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
             }
-            {chartType === 'gauge' &&
+            {chart.chartType === 'gauge' &&
                 <h2>This is a Gauge</h2> //Add code for the Gauge
             }
           </div>
