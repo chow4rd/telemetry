@@ -22,7 +22,7 @@ function Visualise() {
   const [charts, setCharts] = useState([]);
   const [show, setShow] = useState(false);
   const isStored = useRef(false); //stores value without re-render
-
+  const [triggerRender, setTriggerRender] = useState(0);
 
   useEffect(() => {
     //fetch data from MongoDB when the component initilises
@@ -51,10 +51,12 @@ function Visualise() {
     };
   }, [charts]); //charts listener
 
-  const handleDropdownChange = (e, chartIndex) => {
+  const handleDropdownChange = (e, chartIndex, dropDownIndex) => {
     const newCharts = [...charts]; //duplicats stored charts
-    newCharts[chartIndex].selectedElement = e.target.value; //sets selectedElement for chart
+    newCharts[chartIndex].selectedElements[dropDownIndex] = e.target.value.split(',').map(Number) //sets selectedElement for chart
     setCharts(newCharts); //stores the duplicated charts with the new selectedElement
+
+    setTriggerRender((prev) => prev + 1);
   };
 
   const handleFormSubmit = (e) => {
@@ -64,7 +66,7 @@ function Visualise() {
       chartName: e.target.chartName.value,
       xAxis: e.target.xAxis.value,
       yAxis: e.target.yAxis.value,
-      selectedElement: outputLists && outputLists.length > 0 ? outputLists[0].dataType : null, //checks for selectedElement if none set to null
+      selectedElements: [], 
     }; 
 
     setCharts([...charts, newChart]); //duplicates charts and stores with new chart
@@ -83,6 +85,11 @@ function Visualise() {
     setCharts(newCharts); //stores the new list
   };
 
+  const addDropDown = (chartIndex) => {
+    const newCharts = [...charts];
+    newCharts[chartIndex].selectedElements.push([]); // Initialize with an empty string
+    setCharts(newCharts);
+  };
 
   return (
     <div>
@@ -109,10 +116,24 @@ function Visualise() {
         )}
 
         {charts.map((chart, index) => (
-          <div key={index} className="chart-container">
-            <DropDown list={outputLists} onChange={(e) => handleDropdownChange(e, index)} selectedElement={chart.selectedElement}/>
+          <div key={index} className="chartContainer">
+
+            {chart.selectedElements.map((selectedElement, dropDownIndex) => (
+              <DropDown
+                list={outputLists}
+                onChange={(e) => handleDropdownChange(e, index, dropDownIndex)}
+                selectedElement={selectedElement}
+              />
+            ))}
+            <button onClick={() => addDropDown(index)}>+</button>
             <button onClick={() => removeChart(index)}>X</button>
-            <LineChart getData={chart.selectedElement} chartName={chart.chartName} xAxis={chart.xAxis} yAxis={chart.yAxis}/>
+            <LineChart
+              dataList={chart.selectedElements}
+              chartName={chart.chartName}
+              xAxis={chart.xAxis}
+              yAxis={chart.yAxis}
+              triggerRender={triggerRender}
+            />
           </div>
         ))}
       </div>

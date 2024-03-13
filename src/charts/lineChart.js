@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import Highcharts from 'highcharts';
 
-function LineChart({ getData,  chartName, xAxisName, yAxisName }) {
+function LineChart({ dataList, chartName, xAxis, yAxis, triggerRender }) {
   const chartContainerRef = useRef(null);
 
   useEffect(() => {
-    const data = getData ? getData.split(',').map(Number): [];
+    const seriesData = dataList;
 
     const options = {
       chart: {
@@ -23,30 +23,24 @@ function LineChart({ getData,  chartName, xAxisName, yAxisName }) {
           enabled: true,
           liveRedraw: false
         },
-        categories: Array.from({ length: data.length }, (_, i) => i + 1),
       },
       yAxis: {
         title: {
-          text: yAxisName,
+          text: yAxis,
         },
       },
       series: [
+        ...seriesData.map((item, index) => (
         {
-          name: xAxisName,
-          data: data,
-        },
-        {
-          type: 'line',
-          data: data,
-          showInLegend: false,
-          enableMouseTracking: false,
-          color: 'transparent',
-        }
+        name: index.toString(),
+        data: item,
+        type: 'line',
+      }
+      )),
       ]
     };
-
     Highcharts.chart(chartContainerRef.current, options);
-  }, [getData, chartName, xAxisName, yAxisName]);
+  }, [dataList, chartName, xAxis, yAxis, triggerRender]);
 
   return (
     <div>
