@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Highcharts from 'highcharts';
 
-function LineChart({ getData,  chartName, chartType, xAxisName, yAxisName }) {
+function LineChart({ getData,  chartName, xAxisName, yAxisName }) {
   const chartContainerRef = useRef(null);
 
   useEffect(() => {

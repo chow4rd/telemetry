@@ -7,6 +7,7 @@ import Delete from '../icons/delete.png';
 import BarChart from "../charts/basicBarChart";
 import BasicAreaChart from "../charts/basicArea";
 import BasicColumn from "../charts/basicColumn";
+import GaugeSeries from "../charts/gaugeSeries";
 
 function DropDown({ list, onChange, selectedElement }) {
   return (
@@ -143,7 +144,7 @@ function Visualise() {
                 <BasicColumn getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
             }
             {chart.chartType === 'gauge' &&
-                <h2>This is a Gauge</h2> //Add code for the Gauge
+                <GaugeSeries getData={chart.selectedElement} chartName={chart.chartName} xAxisName={chart.xAxis} yAxisName={chart.yAxis}/>
             }
           </div>
         ))}
